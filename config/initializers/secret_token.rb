@@ -7,6 +7,21 @@
 # no regular words or you'll be exposed to dictionary attacks.
 # You can use `rake secret` to generate a secure secret key.
 
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
 FirstApp::Application.config.secret_key_base = '2ddd8c2a4d882ef5f3f7ccd67aecdb508e1b7d2af31ec4b12eeeb85bfc6005df25a4b7a667dea4d74b294032bb19bd8d63363bbd17b237bcfb229f3f1f761b93'
